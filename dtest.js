@@ -752,8 +752,12 @@ function _arrayLikeToArray(r, a) {
     "双层床楼梯进出平台安全护栏的间隙应以下哪几种情况": "小于7mm--不小于12mm、小于25mm--不小于60mm、小于75mm"
 }
 
-  function filter(str){
-    return (str || '')
+  function filter(str,skipNumber){
+    var newStr =  (str || '');
+    if(!skipNumber){
+      newStr = newStr.replace(/^\d*/, '')
+    }
+     newStr
     .replace(/^\d*/, '')
     .replace(/[\(\)\（\）]/g, '')
     .replace(/[\，\。\！\？\；\：\“\”\‘\’\《\》\【\】\、\.\,\!\?\;\:\"\'\(\)\[\]\{\}\-\~\/\_\*\%]/g, '')
@@ -775,7 +779,7 @@ function _arrayLikeToArray(r, a) {
         _toConsumableArray(tmInfo.querySelectorAll('.listOptionSty')).forEach(function (listOptionSty) {
           var pageAnswer = listOptionSty.querySelectorAll('.listOptionSpan')[1].innerText
         
-          if (filter(pageAnswer) === filter(answer)) {
+          if (filter(pageAnswer,true) === filter(answer,true)) {
             listOptionSty.childNodes[0].click()
           }
         })
