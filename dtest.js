@@ -757,14 +757,14 @@ function _arrayLikeToArray(r, a) {
     if(!skipNumber){
       newStr = newStr.replace(/^\d*/, '')
     }
-     newStr
-    .replace(/^\d*/, '')
+    newStr.replace(/^\d*/, '')
     .replace(/[\(\)\（\）]/g, '')
     .replace(/[\，\。\！\？\；\：\“\”\‘\’\《\》\【\】\、\.\,\!\?\;\:\"\'\(\)\[\]\{\}\-\~\/\_\*\%]/g, '')
     .replace(/\s+/g,'')
     .replace('\n', '')
     .replaceAll("[^一-龥]", "")
     .trim()
+    return newStr
   }
 
   Array.from(document.querySelectorAll('.tmInfo')).forEach(function (tmInfo) {
