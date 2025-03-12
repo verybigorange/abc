@@ -1,43 +1,38 @@
 function _toConsumableArray(r) {
-    return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread()
+  return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread()
 }
-
 function _nonIterableSpread() {
-    throw new TypeError(
-        'Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.'
-    )
+  throw new TypeError(
+    'Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.'
+  )
 }
-
 function _unsupportedIterableToArray(r, a) {
-    if (r) {
-        if ('string' == typeof r) return _arrayLikeToArray(r, a)
-        var t = {}.toString.call(r).slice(8, -1)
-        return (
-            'Object' === t && r.constructor && (t = r.constructor.name),
-                'Map' === t || 'Set' === t
-                    ? Array.from(r)
-                    : 'Arguments' === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t)
-                        ? _arrayLikeToArray(r, a)
-                        : void 0
-        )
-    }
+  if (r) {
+    if ('string' == typeof r) return _arrayLikeToArray(r, a)
+    var t = {}.toString.call(r).slice(8, -1)
+    return (
+      'Object' === t && r.constructor && (t = r.constructor.name),
+      'Map' === t || 'Set' === t
+        ? Array.from(r)
+        : 'Arguments' === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t)
+        ? _arrayLikeToArray(r, a)
+        : void 0
+    )
+  }
 }
-
 function _iterableToArray(r) {
-    if (('undefined' != typeof Symbol && null != r[Symbol.iterator]) || null != r['@@iterator']) return Array.from(r)
+  if (('undefined' != typeof Symbol && null != r[Symbol.iterator]) || null != r['@@iterator']) return Array.from(r)
 }
-
 function _arrayWithoutHoles(r) {
-    if (Array.isArray(r)) return _arrayLikeToArray(r)
+  if (Array.isArray(r)) return _arrayLikeToArray(r)
 }
-
 function _arrayLikeToArray(r, a) {
-    ;(null == a || a > r.length) && (a = r.length)
-    for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]
-    return n
+  ;(null == a || a > r.length) && (a = r.length)
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]
+  return n
 }
 ;(function () {
-    var dataJson = {
+  var dataJson = {
         "三线电缆中的红线代表": "火线",
         "在火灾中由于中毒造成人员死亡的罪魁祸首是火灾中约有一半的人员死亡是由它造成的": "一氧化碳",
         "学习认证本使用及管理规范新员工的直接领导须在新员工报到的当日完成入职引导部分": "正确",
@@ -395,58 +390,64 @@ function _arrayLikeToArray(r, a) {
         "未经审批许可手续任何人不得进入有限空间作业": "正确",
         "儿童家具双层床在使用说明中应标识警告上层床最多允许人使用": "错误",
         "公司制定事故隐患报告和举报奖励制度对举报事故隐患确认有功的人员现场隐患查处的专职检查人员及业务专管人员给予奖励": "正确"
+}
+
+  function filter(str){
+    return (str || '')
+    .replace(/^\d*/, '')
+    .replace(/[\(\)\（\）]/g, '')
+    .replace(/[\，\。\！\？\；\：\“\”\‘\’\《\》\【\】\、\.\,\!\?\;\:\"\'\(\)\[\]\{\}\-\~\/\_\*\%]/g, '')
+    .replace(/\s+/g,'')
+    .replace('\n', '')
+    .replaceAll("[^一-龥]", "")
+    .trim()
+  }
+
+  Array.from(document.querySelectorAll('.tmInfo')).forEach(function (tmInfo) {
+    try {
+      var title = tmInfo.childNodes[0].innerText
+      var titleStr = filter(title)
+     
+      var answer = dataJson[titleStr].trim()
+
+      // 单选
+      if (tmInfo.querySelector('div[role=radio]')) {
+        _toConsumableArray(tmInfo.querySelectorAll('.listOptionSty')).forEach(function (listOptionSty) {
+          var pageAnswer = listOptionSty.querySelectorAll('.listOptionSpan')[1].innerText
+        
+          if (filter(pageAnswer) === filter(answer)) {
+            listOptionSty.childNodes[0].click()
+          }
+        })
+      }
+
+      // 多选
+      if (tmInfo.querySelector('div[role=checkbox]')) {
+      
+        _toConsumableArray(tmInfo.querySelectorAll('.listOptionSty')).forEach(function (listOptionSty) {
+         
+          var answers = answer.split('--')
+          for(var i = 0; i < answers.length; i++) {
+            answers[i] = filter(answers[i])
+          }
+          var pageAnswer = listOptionSty.querySelectorAll('.listOptionSpan')[1].innerText
+          if (answers.includes(filter(pageAnswer))) {
+            listOptionSty.childNodes[0].click()
+          }
+        })
+      }
+
+      // 填空
+      if (tmInfo.querySelector('input[placeholder=请此处输入答案]')) {
+        var inputs = tmInfo.querySelectorAll('input[placeholder=请此处输入答案]')
+        var answers = answer.split('--')
+        answers.forEach(function (answerText, index) {
+          inputs[index].value = answerText.trim()
+          inputs[index].dispatchEvent(new Event('input'))
+        })
+      }
+    } catch (error) {
+      console.log(error)
     }
-
-    function filter(str) {
-        return (str || '')
-            .replaceAll("[^一-龥]", "");
-    }
-
-    Array.from(document.querySelectorAll('.tmInfo')).forEach(function (tmInfo) {
-        try {
-            var title = tmInfo.childNodes[0].innerText
-            var titleStr = filter(title)
-
-            var answer = dataJson[titleStr].trim()
-
-            // 单选
-            if (tmInfo.querySelector('div[role=radio]')) {
-                _toConsumableArray(tmInfo.querySelectorAll('.listOptionSty')).forEach(function (listOptionSty) {
-                    var pageAnswer = listOptionSty.querySelectorAll('.listOptionSpan')[1].innerText
-
-                    if (filter(pageAnswer) === filter(answer)) {
-                        listOptionSty.childNodes[0].click()
-                    }
-                })
-            }
-
-            // 多选
-            if (tmInfo.querySelector('div[role=checkbox]')) {
-
-                _toConsumableArray(tmInfo.querySelectorAll('.listOptionSty')).forEach(function (listOptionSty) {
-
-                    var answers = answer.split('--')
-                    for (var i = 0; i < answers.length; i++) {
-                        answers[i] = filter(answers[i])
-                    }
-                    var pageAnswer = listOptionSty.querySelectorAll('.listOptionSpan')[1].innerText
-                    if (answers.includes(filter(pageAnswer))) {
-                        listOptionSty.childNodes[0].click()
-                    }
-                })
-            }
-
-            // 填空
-            if (tmInfo.querySelector('input[placeholder=请此处输入答案]')) {
-                var inputs = tmInfo.querySelectorAll('input[placeholder=请此处输入答案]')
-                var answers = answer.split('--')
-                answers.forEach(function (answerText, index) {
-                    inputs[index].value = answerText.trim()
-                    inputs[index].dispatchEvent(new Event('input'))
-                })
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    })
+  })
 })()
