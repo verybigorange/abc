@@ -757,7 +757,7 @@ function _arrayLikeToArray(r, a) {
     if(!skipNumber){
       newStr = newStr.replace(/^\d*/, '')
     }
-    newStr.replace(/^\d*/, '')
+    newStr = newStr.replace(/^\d*/, '')
     .replace(/[\(\)\（\）]/g, '')
     .replace(/[\，\。\！\？\；\：\“\”\‘\’\《\》\【\】\、\.\,\!\?\;\:\"\'\(\)\[\]\{\}\-\~\/\_\*\%]/g, '')
     .replace(/\s+/g,'')
