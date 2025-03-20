@@ -1,15 +1,18 @@
 window.startIndex = 1;
-window.limit = 1;
+var count = 1;
 window.len = [...document.querySelectorAll(".cl-primary")].length;
 window.timeId = null;
 window.href = window.location.href;
 window.isFinish = false;
 window.video = undefined;
 
+sessionStorage.setItem('limit',String(count));
+
 start();
 
 function start() {
-    window.limit = window.limit - 1;
+    var limit = Number(sessionStorage.getItem('limit')) - 1
+    sessionStorage.setItem('limit',limit)
 
     if (window.len - window.startIndex < 0) {
         console.log("所有视频播放结束");
@@ -68,7 +71,7 @@ function finish() {
     if (window.isFinish) {
         return;
     }
-    if (window.limit <= 0) {
+    if (Number(sessionStorage.getItem('limit')) <= 0) {
         console.log("已经学完了规定数量");
         window.location.href = 'https://www.baidu.com/'
         return;
